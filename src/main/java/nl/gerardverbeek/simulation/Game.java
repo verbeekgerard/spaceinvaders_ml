@@ -1,5 +1,7 @@
 package nl.gerardverbeek.simulation;
 
+import nl.gerardverbeek.util.Options;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -98,7 +100,7 @@ public class Game extends Canvas {
 		// finally make the window visible 
 		container.pack();
 		container.setResizable(false);
-//		container.setVisible(true);
+		container.setVisible(Options.SHOW_GAME_FRAME.getBooleanVal());
 		
 		// add a listener to respond to the user closing the window. If they
 		// do we'd like to exit the game
@@ -313,13 +315,13 @@ public class Game extends Canvas {
 				logicRequiredThisLoop = false;
 			}
 			
-			// if we're waiting for an "any key" press then draw the 
-			// current message 
-			if (waitingForKeyPress) {
-				g.setColor(Color.white);
-				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
-				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
-			}
+//			// if we're waiting for an "any key" press then draw the
+//			// current message
+//			if (waitingForKeyPress) {
+//				g.setColor(Color.white);
+//				g.drawString(message,(800-g.getFontMetrics().stringWidth(message))/2,250);
+//				g.drawString("Press any key",(800-g.getFontMetrics().stringWidth("Press any key"))/2,300);
+//			}
 			
 			// finally, we've completed drawing so clear up the graphics
 			// and flip the buffer over

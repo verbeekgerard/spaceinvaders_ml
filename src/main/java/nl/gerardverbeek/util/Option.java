@@ -7,7 +7,22 @@ public class Option {
         this.val = val;
     }
 
+    public Option(boolean val){
+        if(val){
+            this.val = 1;
+        } else {
+            this.val = 0;
+        }
+    }
+
     public Double getVal(){return val;}
     public Long getLongVal(){return (long)val;}
+    public boolean getBooleanVal(){
+        if(val>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }

@@ -1,5 +1,7 @@
 package nl.gerardverbeek.simulation;
 
+import nl.gerardverbeek.util.Options;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -53,8 +55,12 @@ public abstract class Entity {
 	 */
 	public void move(long delta) {
 		// update the location of the entity based on move speeds
-		x += (delta * dx) / 1000;
-		y += (delta * dy) / 1000;
+		x += (delta * dx) / getMoveSpeed();
+		y += (delta * dy) / getMoveSpeed();
+	}
+
+	private long getMoveSpeed(){
+		return 1000/Options.GAME_SPEED.getLongVal();
 	}
 	
 	/**

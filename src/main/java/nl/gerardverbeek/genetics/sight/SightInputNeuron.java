@@ -15,20 +15,20 @@ public class SightInputNeuron implements Neuron {
     private double aliens = 0;
     private int startPosistion;
     private int endPosition;
-    private int treshold = 0;
+    private SightInputGene sightInputGene;
 
     public SightInputNeuron(Game game, SightRange sightRange, List<Axon> axons){
         this.startPosistion = sightRange.getStart();
         this.endPosition = sightRange.getEnd();
         this.game = game;
         this.axons = axons;
-        this.treshold = ThreadLocalRandom.current().nextInt(0, game.getAlienCount() + 1);
+        sightInputGene = new SightInputGene(ThreadLocalRandom.current().nextInt(0, game.getAlienCount() + 1));
     }
 
     @Override
     public void process(Double value) {
         setAlienPositions();
-        if(aliens > treshold){
+        if(aliens > sightInputGene.getTreshold()){
             axons.stream().forEach(a -> a.process(aliens));
         }
     }

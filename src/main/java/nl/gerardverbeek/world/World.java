@@ -16,8 +16,6 @@ public class World {
         startStatistics();
     }
 
-
-
     private static void startStatistics(){
         Runnable task = () -> {
             while (true) {

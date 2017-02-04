@@ -1,6 +1,7 @@
 package nl.gerardverbeek.population;
 
 import nl.gerardverbeek.simulation.Game;
+import nl.gerardverbeek.util.Options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ public class Population {
 
     public void createPopulation(){
 
-        for (int i = 0; i < 2 ; i++) {
+        for (int i = 0; i < Options.POPULATION_SIZE.getVal() ; i++) {
             Game game = populationService.getGame();
             Player player = populationService.getNewPlayer(game);
             players.add(player);

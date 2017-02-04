@@ -1,26 +1,20 @@
 package nl.gerardverbeek.genetics;
 
-import nl.gerardverbeek.simulation.Game;
-
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class HiddenNeuron implements Neuron {
 
     private List<Axon> axons;
+    private HiddenGene hiddenGene;
 
-    private double treshold = 0;
-    private double enrichmentValue = 0.00;
-
-    public HiddenNeuron(){
-        treshold = ThreadLocalRandom.current().nextDouble(0, Game.getMaxAliens() + 1);
-        enrichmentValue = ThreadLocalRandom.current().nextDouble(1, 2);
+    public HiddenNeuron(HiddenGene hiddenGene){
+        this.hiddenGene = hiddenGene;
     }
 
     @Override
     public void process(Double value) {
-        if (value > treshold) {
-            Double enrichtValue = value * (enrichmentValue);
+        if (value > hiddenGene.getTreshold()) {
+            Double enrichtValue = value * (hiddenGene.getEnrichmentValue());
             axons.stream().forEach(a-> a.process(enrichtValue));
         }
     }
