@@ -333,7 +333,7 @@ public class Game extends Canvas {
 			ship.setHorizontalMovement(0);
 			
 			if ((leftPressed) && (!rightPressed)) {
-				ship.setHorizontalMovement(-(moveSpeed));
+				ship.setHorizontalMovement(-moveSpeed);
 			} else if ((rightPressed) && (!leftPressed)) {
 				ship.setHorizontalMovement(moveSpeed);
 			}
