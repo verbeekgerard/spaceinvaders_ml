@@ -19,7 +19,7 @@ public class World {
         population.startPopulation();
         population.startEvolution();
 
-        startStatistics();
+//        startStatistics();
     }
 
     private static void startStatistics(){

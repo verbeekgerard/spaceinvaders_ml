@@ -14,7 +14,7 @@ public class Options {
 
 
     //Population
-    public static final Option POPULATION_SIZE = new Option(1);
+    public static final Option POPULATION_SIZE = new Option(10);
 
 
     //Evolution

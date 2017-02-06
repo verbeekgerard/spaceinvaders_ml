@@ -254,7 +254,7 @@ public class Game extends Canvas {
 		long lastLoopTime = System.currentTimeMillis();
 		
 		// keep looping round til the game ends
-		while (gameRunning) {
+		while (gameRunning && !death) {
 			// work out how long its been since the last update, this
 			// will be used to calculate how far the entities should
 			// move this loop
