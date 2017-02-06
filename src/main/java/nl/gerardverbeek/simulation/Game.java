@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
@@ -105,14 +104,14 @@ public class Game extends Canvas {
 		// add a listener to respond to the user closing the window. If they
 		// do we'd like to exit the game
 		container.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
+//			public void windowClosing(WindowEvent e) {
+//				System.exit(0);
+//			}
 		});
 		
 		// add a key input system (defined below) to our canvas
 		// so we can respond to key pressed
-		addKeyListener(new KeyInputHandler());
+//		addKeyListener(new KeyInputHandler());
 		
 		// request the focus so key events come to us
 		requestFocus();
@@ -230,7 +229,7 @@ public class Game extends Canvas {
 	 */
 	public void tryToFire() {
 		// check that we have waiting long enough to fire
-		if (System.currentTimeMillis() - lastFire < firingInterval) {
+		if (System.currentTimeMillis() - lastFire < (firingInterval / Options.GAME_SPEED.getLongVal())) {
 			return;
 		}
 		
@@ -334,7 +333,7 @@ public class Game extends Canvas {
 			ship.setHorizontalMovement(0);
 			
 			if ((leftPressed) && (!rightPressed)) {
-				ship.setHorizontalMovement(-moveSpeed);
+				ship.setHorizontalMovement(-(moveSpeed));
 			} else if ((rightPressed) && (!leftPressed)) {
 				ship.setHorizontalMovement(moveSpeed);
 			}
@@ -479,18 +478,15 @@ public class Game extends Canvas {
 	public int getAliensPerRow() {
 		return aliensPerRow;
 	}
-
 	public static int getMaxAliens(){
 		return alienRow*aliensPerRow;
 	}
-
 	public int getScore() {
 		return score;
 	}
-
 	public void setFrameVisible(){
 		container.setVisible(true);
 	}
-
+	public void setFrameInVisible(){container.setVisible(false);}
 	public boolean isDeath() {return death;}
 }

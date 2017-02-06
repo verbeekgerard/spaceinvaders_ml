@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 public class InputLayer implements Layer {
 
+
     List<Neuron> neurons = new ArrayList<>();
 
     public InputLayer(List<Neuron> neurons){
@@ -23,4 +24,9 @@ public class InputLayer implements Layer {
     public List<Axon> getAxonsByIndex(int i){
         return neurons.stream().map(n->n.getAxonByIndex(i)).collect(Collectors.toList());
     }
+
+    public List<Neuron> getNeurons() {
+        return neurons;
+    }
+
 }

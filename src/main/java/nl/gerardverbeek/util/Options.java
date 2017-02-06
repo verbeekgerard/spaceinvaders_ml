@@ -14,8 +14,11 @@ public class Options {
 
 
     //Population
-    public static final Option POPULATION_SIZE = new Option(4);
+    public static final Option POPULATION_SIZE = new Option(1);
 
+
+    //Evolution
+    public static final Option GENE_REPLACEMENT_PERCENTAGE = new Option(50);
 
 
     //Statistics
@@ -25,6 +28,5 @@ public class Options {
     //Game
     public static final Option SHOW_GAME_FRAME = new Option(false);
     public static Option GAME_SPEED = new Option(1);
-
 
 }

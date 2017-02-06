@@ -1,13 +1,15 @@
 package nl.gerardverbeek.genetics;
 
+import nl.gerardverbeek.simulation.Game;
+
 import java.util.List;
 
 public class HiddenNeuron implements Neuron {
 
     private List<Axon> axons;
-    private HiddenGene hiddenGene;
+    private Gene hiddenGene;
 
-    public HiddenNeuron(HiddenGene hiddenGene){
+    public HiddenNeuron(Gene hiddenGene){
         this.hiddenGene = hiddenGene;
     }
 
@@ -29,5 +31,20 @@ public class HiddenNeuron implements Neuron {
             return null;
         }
         return axons.get(i);
+    }
+
+    @Override
+    public Gene getGene() {
+        return null;
+    }
+
+    @Override
+    public void setGene(Gene gene) {
+        this.hiddenGene = gene;
+    }
+
+    @Override
+    public void setGame(Game game) {
+
     }
 }

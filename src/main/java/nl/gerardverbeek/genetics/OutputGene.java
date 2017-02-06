@@ -8,6 +8,18 @@ public class OutputGene implements Gene {
         this.sleepTime = sleepTime;
     }
 
+
+    @Override
+    public double getTreshold() {
+        return 0;
+    }
+
+    @Override
+    public double getEnrichmentValue() {
+        return 0;
+    }
+
+    @Override
     public long getSleepTime() {
         return sleepTime;
     }

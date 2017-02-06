@@ -16,6 +16,7 @@ public class Option {
     }
 
     public Double getVal(){return val;}
+    public int getIntVal(){return (int) val;}
     public Long getLongVal(){return (long)val;}
     public boolean getBooleanVal(){
         if(val>0){

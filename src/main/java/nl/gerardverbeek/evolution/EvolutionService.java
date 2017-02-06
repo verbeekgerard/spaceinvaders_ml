@@ -1,6 +1,10 @@
 package nl.gerardverbeek.evolution;
 
+import nl.gerardverbeek.genetics.Neuron;
 import nl.gerardverbeek.population.Player;
+import nl.gerardverbeek.simulation.Game;
+import nl.gerardverbeek.util.Options;
+import nl.gerardverbeek.util.PlayerNames;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,22 +12,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class EvolutionService {
 
-    public void evolvePopultion(List<Player> players){
+    public List<Player> createNewPopulation(List<Player> oldPlayers){
 
-    }
-
-    private List<Player> createNewPopulation(List<Player> oldPlayers){
-
-        double maxFitness = getHighestFitness(oldPlayers);
+        int maxFitness = getHighestFitness(oldPlayers);
         List<Player> newPlayers = new ArrayList<>();
 
-        int i = 0;
         while(newPlayers.size() < oldPlayers.size()){
-
-            //get player with random number between 0 and max fitness
-            //pick player where fitness is between 0 and the random number
-            //the higher the fitness is from the player the more likely the chance it is picked for reproduction
-
+            newPlayers.add(getNewPlayer(oldPlayers, maxFitness));
         }
 
         return newPlayers;
@@ -33,18 +28,53 @@ public class EvolutionService {
         Player newPlayer;
 
         List<Player> parents = getParentsForReproduction(players,maxFitness);
-        newPlayer = createPlayer(parents);
+        newPlayer = mate(parents);
 
+        newPlayer.setName(PlayerNames.getRandomName());
+        newPlayer.setShutdown(false);
+        setNewGame(newPlayer);
         return newPlayer;
     }
 
-    private Player createPlayer(List<Player> parents){
-        //pick genes from both parents and combine them to one new player
+    private void setNewGame(Player player){
+        Game newGame = new Game();
+        player.setGame(newGame);
+        player.getInputLayer().getNeurons().stream().forEach(n -> n.setGame(newGame));
+        player.getOutputLayer().getNeurons().stream().forEach(n-> n.setGame(newGame));
+
+    }
 
 
+    /**
+     * Pick genes from both parents and combine them to one new player
+     * @param parents
+     * @return
+     */
+    private Player mate(List<Player> parents){
+        Player parent1 = parents.get(0);
+        Player parent2 = parents.get(1);
+
+        Player child = null;
+        try {
+            child = (Player) parent1.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        setChildInputLayerWithGenesFormParent(child, parent2);
+        return child;
+    }
 
 
-        return null;
+    private void setChildInputLayerWithGenesFormParent(Player child, Player parent){
+        int maxNeurons = child.getInputLayer().getNeurons().size();
+        int neuronsToChangeAmount = maxNeurons * (Options.GENE_REPLACEMENT_PERCENTAGE.getIntVal()/100);
+
+        for (int i = 0; i < neuronsToChangeAmount ; i++) {
+            //pick random neuron
+            int randomNeuronIndex = ThreadLocalRandom.current().nextInt(0, maxNeurons + 1);
+            Neuron childNeuron = child.getInputLayer().getNeurons().get(randomNeuronIndex);
+            childNeuron.setGene(parent.getInputLayer().getNeurons().get(randomNeuronIndex).getGene());
+        }
     }
 
     private List<Player> getParentsForReproduction(List<Player> players, int maxFitness){
@@ -61,9 +91,9 @@ public class EvolutionService {
 
         while(player==null) {
             int randomFitness = ThreadLocalRandom.current().nextInt(0, maxFitness + 1);
-            int randomPlayerIndex = ThreadLocalRandom.current().nextInt(0, players.size() + 1);
+            int randomPlayerIndex = ThreadLocalRandom.current().nextInt(0, players.size());
             Player randomPlayer = players.get(randomPlayerIndex);
-            if (player.getFitness() > randomFitness) {
+            if (randomPlayer.getFitness() > randomFitness) {
                 player = randomPlayer;
             }
         }

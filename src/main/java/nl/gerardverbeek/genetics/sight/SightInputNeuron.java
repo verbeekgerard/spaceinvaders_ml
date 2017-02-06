@@ -1,6 +1,7 @@
 package nl.gerardverbeek.genetics.sight;
 
 import nl.gerardverbeek.genetics.Axon;
+import nl.gerardverbeek.genetics.Gene;
 import nl.gerardverbeek.genetics.Neuron;
 import nl.gerardverbeek.simulation.AlienEntity;
 import nl.gerardverbeek.simulation.Game;
@@ -15,7 +16,7 @@ public class SightInputNeuron implements Neuron {
     private double aliens = 0;
     private int startPosistion;
     private int endPosition;
-    private SightInputGene sightInputGene;
+    private Gene sightInputGene;
 
     public SightInputNeuron(Game game, SightRange sightRange, List<Axon> axons){
         this.startPosistion = sightRange.getStart();
@@ -41,6 +42,16 @@ public class SightInputNeuron implements Neuron {
         return axons.get(i);
     }
 
+    @Override
+    public Gene getGene() {
+        return sightInputGene;
+    }
+
+    @Override
+    public void setGene(Gene gene) {
+        this.sightInputGene = gene;
+    }
+
     private void setAlienPositions(){
         aliens = 0;
         game.getEntities().forEach(e -> {
@@ -51,6 +62,11 @@ public class SightInputNeuron implements Neuron {
                     }
                 }
         );
+    }
+
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
     }
 
 }

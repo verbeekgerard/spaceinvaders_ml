@@ -20,6 +20,8 @@ import java.util.ResourceBundle;
 public class MainDashboardController implements Initializable{
     private World world = new World();
 
+    private Player bestPlayer;
+
     @FXML
     private Label averageFitnessValueLabel;
 
@@ -47,6 +49,8 @@ public class MainDashboardController implements Initializable{
                     ex.printStackTrace();
                 }
 
+                System.out.println("AllPlayersDeath: " + statistics.allPlayersDeath());
+
                 Platform.runLater(
                         () -> {
                             averageFitnessValueLabel.setText("" + statistics.getAverageFitness());
@@ -61,8 +65,13 @@ public class MainDashboardController implements Initializable{
     }
 
     public void showBestPlayer(){
-        Player bestPlayer = world.getBestPlayer();
+        bestPlayer = world.getBestPlayer();
         bestPlayer.showFrame();
+    }
+
+    public void hideBestPlayer(){
+        if(bestPlayer!=null)
+            bestPlayer.hideFrame();
     }
 
     @Override

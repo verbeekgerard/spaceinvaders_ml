@@ -1,15 +1,20 @@
 package nl.gerardverbeek.population;
 
+import nl.gerardverbeek.evolution.EvolutionService;
 import nl.gerardverbeek.simulation.Game;
 import nl.gerardverbeek.util.Options;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Population {
 
-    PopulationService populationService = new PopulationService();
+    private PopulationService populationService = new PopulationService();
+    private EvolutionService evolutionService = new EvolutionService();
+
     List<Player> players = new ArrayList<>();
+
 
     public void createPopulation(){
 
@@ -22,26 +27,41 @@ public class Population {
     }
 
     public void startPopulation(){
-        players.stream().forEach(p->p.startPlayer());
+        players.stream().forEach(p -> p.startPlayer());
     }
 
-//    public void startPlayer(Player player) {
-//        System.out.println("startPlayer..");
-//
-//        Runnable task = () -> {
-//            while (!player.isDeath()) {
-//                player.performAction();
-//            }
-//        };
-//
-//        Thread thread = new Thread(task);
-//        thread.start();
-//
-//        player.getGame().startGameLoop();
-//    }
+    public void startEvolution(){
+        Runnable playerTask = () -> {
+            while (true) {
+                if(allPlayersDeath()){
+                    //create new population
+                    List<Player> newPlayers = evolutionService.createNewPopulation(players);
+                    //Stop and remove old players
+                    stopOldPlayers();
+                    //start new ones
+                    players = newPlayers;
+                    startPopulation();
+                }
+            }
+        };
 
-    private void removeBadPlayers(){
+        Thread thread = new Thread(playerTask);
+        thread.start();
 
+    }
+
+    private void stopOldPlayers(){
+        players.stream().forEach(Player::shutdown);
+        players.clear();
+    }
+
+
+    public boolean allPlayersDeath(){
+        List<Player> players = getPlayers();
+        return !players.stream()
+                .map(Player::isDeath)
+                .collect(Collectors.toList())
+                .contains(false);
     }
 
     public List<Player> getPlayers(){

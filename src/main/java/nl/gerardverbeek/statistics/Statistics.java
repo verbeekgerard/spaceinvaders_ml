@@ -13,12 +13,12 @@ public class Statistics {
         this.population = population;
     }
 
-    public static void logStatistics(){
+    public void logStatistics(){
         List<Player> players = population.getPlayers();
         players.stream().forEach(p->printStatsForPlayer(p));
     }
 
-    private static void printStatsForPlayer(Player player){
+    private void printStatsForPlayer(Player player){
         System.out.println("Player: " + player.getName());
         System.out.println("Fitness: " + player.getFitness());
     }
@@ -30,5 +30,10 @@ public class Statistics {
                 .mapToInt(i->i)
                 .average()
                 .orElse(0);
+    }
+
+
+    public boolean allPlayersDeath(){
+        return population.allPlayersDeath();
     }
 }

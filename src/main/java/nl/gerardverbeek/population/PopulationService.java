@@ -111,7 +111,7 @@ public class PopulationService {
 
     private OutputGene createRandomOutputGene(){
         long randomSleepTime = ThreadLocalRandom.current().nextLong(0, Options.MAX_OUTPUT_SLEEP_TIME.getLongVal() + 1);
-        long sleepTimeWithGameSpeed = randomSleepTime/Options.GAME_SPEED.getLongVal();
+        long sleepTimeWithGameSpeed = randomSleepTime/(Options.GAME_SPEED.getLongVal()^2);
         return new OutputGene(sleepTimeWithGameSpeed);
     }
 }

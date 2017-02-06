@@ -5,7 +5,7 @@ import nl.gerardverbeek.simulation.Game;
 public class FireOutputNeuron implements Neuron {
 
     Game game;
-    OutputGene outputGene;
+    Gene outputGene;
 
     public FireOutputNeuron(Game game, OutputGene outputGene){
         this.outputGene = outputGene;
@@ -26,5 +26,20 @@ public class FireOutputNeuron implements Neuron {
     @Override
     public Axon getAxonByIndex(int i) {
         return null;
+    }
+
+    @Override
+    public Gene getGene() {
+        return outputGene;
+    }
+
+    @Override
+    public void setGene(Gene gene) {
+        this.outputGene = gene;
+    }
+
+    @Override
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

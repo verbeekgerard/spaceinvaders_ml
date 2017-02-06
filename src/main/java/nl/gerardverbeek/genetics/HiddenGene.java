@@ -1,6 +1,6 @@
 package nl.gerardverbeek.genetics;
 
-public class HiddenGene {
+public class HiddenGene implements Gene {
 
     private double treshold = 0;
     private double enrichmentValue = 0.00;
@@ -12,6 +12,7 @@ public class HiddenGene {
     }
 
 
+    @Override
     public double getTreshold() {
         return treshold;
     }
@@ -20,8 +21,14 @@ public class HiddenGene {
         this.treshold = treshold;
     }
 
+    @Override
     public double getEnrichmentValue() {
         return enrichmentValue;
+    }
+
+    @Override
+    public long getSleepTime() {
+        return 0;
     }
 
     public void setEnrichmentValue(double enrichmentValue) {

@@ -16,4 +16,9 @@ public class OutputLayer implements Layer {
     public void processAllNeurons() {
 
     }
+
+    public List<Neuron> getNeurons() {
+        return outputNeurons;
+    }
+
 }
