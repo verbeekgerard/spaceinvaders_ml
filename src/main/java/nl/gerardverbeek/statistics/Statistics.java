@@ -22,4 +22,13 @@ public class Statistics {
         System.out.println("Player: " + player.getName());
         System.out.println("Fitness: " + player.getFitness());
     }
+
+    public double getAverageFitness(){
+        List<Player> players = population.getPlayers();
+        return players.stream()
+                .map(p-> p.getFitness())
+                .mapToInt(i->i)
+                .average()
+                .orElse(0);
+    }
 }

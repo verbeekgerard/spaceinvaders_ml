@@ -14,7 +14,7 @@ public class Options {
 
 
     //Population
-    public static final Option POPULATION_SIZE = new Option(1);
+    public static final Option POPULATION_SIZE = new Option(4);
 
 
 
@@ -22,10 +22,9 @@ public class Options {
     public static final Option STATISTICS_REFRESH_RATE = new Option(2000);
 
 
-
     //Game
-    public static final Option SHOW_GAME_FRAME = new Option(true);
-    public static final Option GAME_SPEED = new Option(7);
+    public static final Option SHOW_GAME_FRAME = new Option(false);
+    public static Option GAME_SPEED = new Option(1);
 
 
 }
