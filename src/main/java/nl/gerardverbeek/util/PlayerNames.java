@@ -7,7 +7,7 @@ public class PlayerNames {
 
 
     public static String getRandomName(){
-        int randomIndex = ThreadLocalRandom.current().nextInt(0, names.length + 1);
+        int randomIndex = ThreadLocalRandom.current().nextInt(0, names.length);
         return names[randomIndex];
     }
 }

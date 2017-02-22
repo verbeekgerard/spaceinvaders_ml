@@ -11,7 +11,7 @@ public class UIApplication extends javafx.application.Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("mainDashboard.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/ui/mainDashboard.fxml"));
         Scene scene = new Scene(root);
 
         primaryStage.setScene(scene);

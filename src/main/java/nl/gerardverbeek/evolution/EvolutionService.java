@@ -2,15 +2,21 @@ package nl.gerardverbeek.evolution;
 
 import nl.gerardverbeek.genetics.Neuron;
 import nl.gerardverbeek.population.Player;
+import nl.gerardverbeek.population.PopulationService;
 import nl.gerardverbeek.simulation.Game;
 import nl.gerardverbeek.util.Options;
 import nl.gerardverbeek.util.PlayerNames;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Service
 public class EvolutionService {
+
+    private PopulationService populationService = new PopulationService();
+
 
     public List<Player> createNewPopulation(List<Player> oldPlayers){
 
@@ -32,7 +38,8 @@ public class EvolutionService {
 
         newPlayer.setName(PlayerNames.getRandomName());
         newPlayer.setShutdown(false);
-        setNewGame(newPlayer);
+        newPlayer.mutate();
+//        setNewGame(newPlayer);
         return newPlayer;
     }
 
@@ -40,7 +47,7 @@ public class EvolutionService {
         Game newGame = new Game();
         player.setGame(newGame);
         player.getInputLayer().getNeurons().stream().forEach(n -> n.setGame(newGame));
-        player.getOutputLayer().getNeurons().stream().forEach(n-> n.setGame(newGame));
+        player.getOutputLayer().getNeurons().stream().forEach(n -> n.setGame(newGame));
 
     }
 
@@ -54,26 +61,75 @@ public class EvolutionService {
         Player parent1 = parents.get(0);
         Player parent2 = parents.get(1);
 
-        Player child = null;
-        try {
-            child = (Player) parent1.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        setChildInputLayerWithGenesFormParent(child, parent2);
+        Player child = populationService.getNewPlayer(new Game());
+
+        //Set all genes from parent1
+        setChildInputLayerWithAllGenesFromParent(child, parent1);
+        setChildHiddenLayerWithAllGenesFromParent(child, parent1);
+        setChildOutputLayerWithAllGenesFromParent(child, parent1);
+
+        //replace some random genes in the child from parent2
+        setChildInputLayerWithGenesFromParent(child, parent2);
+        setChildHiddenLayerWithGenesFromParent(child, parent2);
+        setChildOutputLayerWithGenesFromParent(child, parent2);
+
+        child.mutate();
         return child;
     }
 
 
-    private void setChildInputLayerWithGenesFormParent(Player child, Player parent){
-        int maxNeurons = child.getInputLayer().getNeurons().size();
+    private void setChildOutputLayerWithGenesFromParent(Player child, Player parent){
+        int maxNeurons = child.getOutputLayer().getNeurons().size();
         int neuronsToChangeAmount = maxNeurons * (Options.GENE_REPLACEMENT_PERCENTAGE.getIntVal()/100);
 
         for (int i = 0; i < neuronsToChangeAmount ; i++) {
-            //pick random neuron
+            int randomNeuronIndex = ThreadLocalRandom.current().nextInt(0, maxNeurons + 1);
+            Neuron childNeuron = child.getOutputLayer().getNeurons().get(randomNeuronIndex);
+            childNeuron.setGene(parent.getOutputLayer().getNeurons().get(randomNeuronIndex).getGene());
+        }
+    }
+
+    private void setChildOutputLayerWithAllGenesFromParent(Player child, Player parent){
+        int maxNeurons = child.getOutputLayer().getNeurons().size();
+        for (int i = 0; i < maxNeurons ; i++) {
+            Neuron childNeuron = child.getOutputLayer().getNeurons().get(i);
+            childNeuron.setGene(parent.getOutputLayer().getNeurons().get(i).getGene());
+        }
+    }
+
+    private void setChildHiddenLayerWithGenesFromParent(Player child, Player parent){
+        int maxNeurons = child.getHiddenLayer().getNeurons().size();
+        int neuronsToChangeAmount = maxNeurons * (Options.GENE_REPLACEMENT_PERCENTAGE.getIntVal()/100);
+        for (int i = 0; i < neuronsToChangeAmount ; i++) {
+            int randomNeuronIndex = ThreadLocalRandom.current().nextInt(0, maxNeurons + 1);
+            Neuron childNeuron = child.getHiddenLayer().getNeurons().get(randomNeuronIndex);
+            childNeuron.setGene(parent.getHiddenLayer().getNeurons().get(randomNeuronIndex).getGene());
+        }
+    }
+
+    private void setChildHiddenLayerWithAllGenesFromParent(Player child, Player parent){
+        int maxNeurons = child.getHiddenLayer().getNeurons().size();
+        for (int i = 0; i < maxNeurons ; i++) {
+            Neuron childNeuron = child.getHiddenLayer().getNeurons().get(i);
+            childNeuron.setGene(parent.getHiddenLayer().getNeurons().get(i).getGene());
+        }
+    }
+
+    private void setChildInputLayerWithGenesFromParent(Player child, Player parent){
+        int maxNeurons = child.getInputLayer().getNeurons().size();
+        int neuronsToChangeAmount = maxNeurons * (Options.GENE_REPLACEMENT_PERCENTAGE.getIntVal()/100);
+        for (int i = 0; i < neuronsToChangeAmount ; i++) {
             int randomNeuronIndex = ThreadLocalRandom.current().nextInt(0, maxNeurons + 1);
             Neuron childNeuron = child.getInputLayer().getNeurons().get(randomNeuronIndex);
             childNeuron.setGene(parent.getInputLayer().getNeurons().get(randomNeuronIndex).getGene());
+        }
+    }
+
+    private void setChildInputLayerWithAllGenesFromParent(Player child, Player parent){
+        int maxNeurons = child.getInputLayer().getNeurons().size();
+        for (int i = 0; i < maxNeurons ; i++) {
+            Neuron childNeuron = child.getInputLayer().getNeurons().get(i);
+            childNeuron.setGene(parent.getInputLayer().getNeurons().get(i).getGene());
         }
     }
 
@@ -88,17 +144,22 @@ public class EvolutionService {
 
     private Player getParentFromPopulation(List<Player> players, int maxFitness){
         Player player = null;
+        int counter = 0;
 
-        while(player==null) {
+        while(player==null && counter < 1000) {
             int randomFitness = ThreadLocalRandom.current().nextInt(0, maxFitness + 1);
             int randomPlayerIndex = ThreadLocalRandom.current().nextInt(0, players.size());
             Player randomPlayer = players.get(randomPlayerIndex);
             if (randomPlayer.getFitness() > randomFitness) {
                 player = randomPlayer;
             }
+            counter++;
         }
-        return player;
+        if(player == null){
+            player = players.get(ThreadLocalRandom.current().nextInt(0, players.size()));
+        }
 
+        return player;
     }
 
 

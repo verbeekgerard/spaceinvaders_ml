@@ -6,6 +6,7 @@ import nl.gerardverbeek.util.Options;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Population {
@@ -26,14 +27,29 @@ public class Population {
 
     }
 
+    public void restartPopulation(){
+//        players.stream().forEach(p -> p.hideFrame());
+        players.stream().forEach(p -> p.restartPlayer());
+//        players.stream().forEach(p -> p.showFrame());
+
+
+    }
+
     public void startPopulation(){
         players.stream().forEach(p -> p.startPlayer());
     }
 
     public void startEvolution(){
-        Runnable playerTask = () -> {
+        Runnable task = () -> {
             while (true) {
                 if(allPlayersDeath()){
+                    Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+                    System.out.println("threads: " + threadSet.size());
+
+//                    TODO. When createNewPopulation is called memory leak 
+
+
+//
                     //create new population
                     List<Player> newPlayers = evolutionService.createNewPopulation(players);
                     //Stop and remove old players
@@ -41,18 +57,18 @@ public class Population {
                     //start new ones
                     players = newPlayers;
                     startPopulation();
+                    System.out.println("new population created");
                 }
             }
         };
 
-        Thread thread = new Thread(playerTask);
+        Thread thread = new Thread(task);
         thread.start();
 
     }
 
     private void stopOldPlayers(){
         players.stream().forEach(Player::shutdown);
-        players.clear();
     }
 
 

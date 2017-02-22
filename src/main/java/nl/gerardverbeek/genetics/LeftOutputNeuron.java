@@ -14,13 +14,12 @@ public class LeftOutputNeuron implements Neuron {
 
     @Override
     public void process(Double value) {
-        game.setLeftPressed(true);
+        game.pressLeft();
         try {
             Thread.sleep(outputGene.getSleepTime());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        game.setLeftPressed(false);
     }
 
     @Override

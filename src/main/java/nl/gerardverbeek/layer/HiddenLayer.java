@@ -21,4 +21,8 @@ public class HiddenLayer implements Layer{
     public List<Axon> getAxonsByIndex(int i){
         return neurons.stream().map(n->n.getAxonByIndex(i)).collect(Collectors.toList());
     }
+
+    public List<Neuron> getNeurons(){
+        return neurons;
+    }
 }

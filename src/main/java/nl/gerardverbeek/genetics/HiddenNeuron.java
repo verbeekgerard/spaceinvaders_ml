@@ -35,12 +35,14 @@ public class HiddenNeuron implements Neuron {
 
     @Override
     public Gene getGene() {
-        return null;
+        return hiddenGene;
     }
 
     @Override
     public void setGene(Gene gene) {
-        this.hiddenGene = gene;
+        this.hiddenGene.setTreshold(gene.getTreshold());
+        this.hiddenGene.setEnrichmentValue(gene.getEnrichmentValue());
+        this.hiddenGene.setSleepTime(gene.getSleepTime());
     }
 
     @Override

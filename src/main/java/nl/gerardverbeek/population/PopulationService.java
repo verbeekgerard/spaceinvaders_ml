@@ -8,16 +8,17 @@ import nl.gerardverbeek.layer.InputLayer;
 import nl.gerardverbeek.layer.OutputLayer;
 import nl.gerardverbeek.simulation.Game;
 import nl.gerardverbeek.util.Options;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Service
 public class PopulationService {
 
     private List<SightRange> sightRanges = new ArrayList();
-    private int hiddenLayerNodeAmount = 3;
     private int outputLayerAmount = 3;
 
     public PopulationService(){
@@ -25,8 +26,17 @@ public class PopulationService {
     }
 
     private void setSightRanges(){
-        sightRanges.add(new SightRange(0,324));
-        sightRanges.add(new SightRange(325, 651));
+
+        int max_x_frame = Options.MAX_X_FRAME.getIntVal();
+        int amount_input_neurons = Options.AMOUNT_INPUT_NEURONS.getIntVal();
+        int offset = max_x_frame/amount_input_neurons;
+
+        int oldVal = 0;
+
+        for (int i = offset; i <= max_x_frame; i+=offset) {
+            sightRanges.add(new SightRange(oldVal+1,i));
+            oldVal+= offset;
+        }
     }
 
     public Game getGame(){
@@ -79,7 +89,7 @@ public class PopulationService {
 
     private HiddenLayer createHiddenLayer(InputLayer inputlayer) {
         List<Neuron> hiddenNeurons = new ArrayList<>();
-        for (int i = 0; i < hiddenLayerNodeAmount; i++) {
+        for (int i = 0; i < Options.AMOUNT_HIDDEN_NEURONS.getIntVal(); i++) {
             HiddenGene hiddenGene = createRandomHiddenGene();
             HiddenNeuron hiddenNeuron = new HiddenNeuron(hiddenGene);
             inputlayer.getAxonsByIndex(i).stream().forEach(a -> a.setOutputNeuron(hiddenNeuron));
@@ -92,7 +102,7 @@ public class PopulationService {
     private InputLayer createInputLayer(Game game){
         List<Neuron> inputNeurons = new ArrayList<>();
         for (int i = 0; i < sightRanges.size(); i++) {
-            List<Axon> inputToHiddenAxons = createAxons(hiddenLayerNodeAmount);
+            List<Axon> inputToHiddenAxons = createAxons(Options.AMOUNT_HIDDEN_NEURONS.getIntVal());
             inputNeurons.add(new SightInputNeuron(game, sightRanges.get(i), inputToHiddenAxons));
         }
         return new InputLayer(inputNeurons);
@@ -111,7 +121,6 @@ public class PopulationService {
 
     private OutputGene createRandomOutputGene(){
         long randomSleepTime = ThreadLocalRandom.current().nextLong(0, Options.MAX_OUTPUT_SLEEP_TIME.getLongVal() + 1);
-        long sleepTimeWithGameSpeed = randomSleepTime/(Options.GAME_SPEED.getLongVal()^2);
-        return new OutputGene(sleepTimeWithGameSpeed);
+        return new OutputGene(randomSleepTime);
     }
 }

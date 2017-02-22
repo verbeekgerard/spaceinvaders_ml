@@ -14,7 +14,12 @@ public class World {
     private static Statistics statistics = new Statistics(population);
 
 
-    public void start(){
+    public static void main(String [] args){
+        start();
+    }
+
+
+    public static void start(){
         population.createPopulation();
         population.startPopulation();
         population.startEvolution();
@@ -37,8 +42,16 @@ public class World {
         thread.start();
     }
 
-    public Player getBestPlayer(){
+//    public Player getBestPlayer(){
+//        return population.getPlayers().stream().max(Comparator.comparing(Player::getFitness)).get();
+//    }
+
+    public static Player getBestPlayer(){
         return population.getPlayers().stream().max(Comparator.comparing(Player::getFitness)).get();
+    }
+
+    public Population getPopulation(){
+        return population;
     }
 
 

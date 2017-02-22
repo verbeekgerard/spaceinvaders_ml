@@ -1,7 +1,7 @@
 package nl.gerardverbeek.util;
 
 public class Options {
-    public static final Option MUTATION_RATE = new Option(0.01);
+    public static final Option MUTATION_RATE = new Option(0.02);
 
 
     //Player
@@ -14,7 +14,7 @@ public class Options {
 
 
     //Population
-    public static final Option POPULATION_SIZE = new Option(10);
+    public static final Option POPULATION_SIZE = new Option(20);
 
 
     //Evolution
@@ -24,9 +24,16 @@ public class Options {
     //Statistics
     public static final Option STATISTICS_REFRESH_RATE = new Option(2000);
 
+    //Layer
+    public static final Option MAX_X_FRAME = new Option(650);
+    public static final Option AMOUNT_INPUT_NEURONS = new Option(10);
+    public static final Option AMOUNT_HIDDEN_NEURONS = new Option(10);
+
+
+
 
     //Game
     public static final Option SHOW_GAME_FRAME = new Option(false);
-    public static Option GAME_SPEED = new Option(1);
+    public static Option GAME_SPEED = new Option(15);
 
 }

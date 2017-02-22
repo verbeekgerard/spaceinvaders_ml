@@ -1,9 +1,9 @@
 package nl.gerardverbeek.genetics.sight;
 
+import javafx.scene.image.ImageView;
 import nl.gerardverbeek.genetics.Axon;
 import nl.gerardverbeek.genetics.Gene;
 import nl.gerardverbeek.genetics.Neuron;
-import nl.gerardverbeek.simulation.AlienEntity;
 import nl.gerardverbeek.simulation.Game;
 
 import java.util.List;
@@ -49,16 +49,17 @@ public class SightInputNeuron implements Neuron {
 
     @Override
     public void setGene(Gene gene) {
-        this.sightInputGene = gene;
+        this.sightInputGene.setTreshold(gene.getTreshold());
+        this.sightInputGene.setEnrichmentValue(gene.getEnrichmentValue());
+        this.sightInputGene.setSleepTime(gene.getSleepTime());
     }
 
     private void setAlienPositions(){
         aliens = 0;
-        game.getEntities().forEach(e -> {
-                    if (e instanceof AlienEntity) {
-                        if (e.getX() > startPosistion || e.getX() < endPosition) {
-                            aliens++;
-                        }
+        List<ImageView> entities = (game.getEntities());
+        entities.stream().forEach(e -> {
+                    if (e.getX() > startPosistion && e.getX() < endPosition) {
+                        aliens++;
                     }
                 }
         );

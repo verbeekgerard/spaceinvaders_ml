@@ -14,13 +14,12 @@ public class FireOutputNeuron implements Neuron {
 
     @Override
     public void process(Double value){
-        game.setFirePressed(true);
+        game.shoot();
         try {
             Thread.sleep(outputGene.getSleepTime());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        game.setFirePressed(false);
     }
 
     @Override
@@ -35,7 +34,9 @@ public class FireOutputNeuron implements Neuron {
 
     @Override
     public void setGene(Gene gene) {
-        this.outputGene = gene;
+        this.outputGene.setTreshold(gene.getTreshold());
+        this.outputGene.setEnrichmentValue(gene.getEnrichmentValue());
+        this.outputGene.setSleepTime(gene.getSleepTime());
     }
 
     @Override
