@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="604.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.gerardverbeek.ui.MainDashboardController">
+   <children>
+      <Button fx:id="startApp" layoutX="14.0" layoutY="53.0" mnemonicParsing="false" onAction="#startApp" text="Start application" />
+      <Button fx:id="startApp1" layoutX="14.0" layoutY="117.0" mnemonicParsing="false" onAction="#showStatistics" text="Show statistics" />
+      <Label fx:id="averageFitnessLabelText" layoutX="156.0" layoutY="122.0" text="Average fitness:" />
+      <Label fx:id="averageFitnessValueLabel" layoutX="277.0" layoutY="122.0" text="0" />
+      <Button fx:id="showBestPlayer" layoutX="11.0" layoutY="175.0" mnemonicParsing="false" onAction="#showBestPlayer" text="Show best player" />
+      <Slider fx:id="gameSpeedSlider" layoutX="14.0" layoutY="392.0" />
+      <Label fx:id="gameSpeedLabelText" layoutX="14.0" layoutY="365.0" text="Game speed" />
+      <Label fx:id="gameSpeedLabelValue" layoutX="183.0" layoutY="391.0" text="0" />
+      <Button fx:id="hideBestPlayer" layoutX="144.0" layoutY="175.0" mnemonicParsing="false" onAction="#hideBestPlayer" text="Hide best player" />
+      <Button fx:id="showAllPlayersStats" layoutX="11.0" layoutY="225.0" mnemonicParsing="false" onAction="#showAllPlayers" text="Show all players stats" />
+   </children>
+</Pane>
